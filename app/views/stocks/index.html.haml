@@ -1,0 +1,16 @@
+-# %header.fu-stock-header
+-#   %h1 Stock Watcher
+-#   -# = form_with model: @stock, :html => {class: 'fu-stock-form'} do |f|
+-#   -#   = f.text_field :symbol, placeholder: "Enter stock symbol...", class: 'fu-stock-symbol-field'
+-#   -#   = f.submit "ADD", class: 'fu-stock-submit'
+-#
+-#   = form_tag "", method: 'get', remote: true, class: 'fu-stock-form' do
+-#     = text_field_tag :symbol, 'GOOG', placeholder: "Enter stock symbol...", class: 'fu-stock-symbol-field'
+-#     = submit_tag "ADD", class: 'fu-stock-submit'
+-# .fu-stock-display
+-#   - unless @stocks.blank?
+-#     %ul.fu-stocks
+-#       -# = render @stocks
+-#   - else
+-#     .fu-stock-none
+-#       No stocks yet!

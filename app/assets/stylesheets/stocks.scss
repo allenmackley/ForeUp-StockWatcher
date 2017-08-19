@@ -106,115 +106,134 @@ h1 {
     }
   }
 }
-.fu-stock-display {
-  display: flex;
-  flex-wrap: wrap;
+.fu-stock-display {  
   @media screen and (max-width: $break-1) {
     flex-direction: column;
     align-items: center;
     margin: 12px 0 0 0;
   }
-  .fu-stock-item {
+  .fu-stock-none {
     display: flex;
-    justify-content: space-between;
-    box-sizing: border-box;
-    min-width: 320px;
-    width: 320px;
-    height: 135px;
-    max-width: 130px;
-    overflow: hidden;
-    background: white;
-    border: 1px solid #E0E0E0;
-    border-radius: 3px;
-    margin: 10px;
-    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 300px;
+    font-size: 24px;
+    font-weight: bold;
+    color: $gray-light;
+  }
+  .fu-stocks {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
     @media screen and (max-width: $break-1) {
-      height: 60px;
-      margin: 5px;
-      min-width: 290px;
-      width: 290px;
+      flex-direction: column;
+      align-items: center;
     }
-    .fu-stock-left {
-      @extend .flex-col;
-      width: 50%;
-      justify-content: space-between;
-      @media screen and (max-width: $break-1) {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-      }
-      .fu-stock-sig {
-        width: 100%;
-        @media screen and (max-width: $break-1) {
-          width: 50%;
-        }
-        .fu-stock-title {
-          margin: 0;
-          font-size: 18px;
-          @include text-ellipsis();
-          @media screen and (max-width: $break-1) {
-            font-size: 14px;
-          }
-        }
-        .fu-stock-symbol {
-          color: $gray-light;
-          font-size: 14px;
-          @media screen and (max-width: $break-1) {
-            // display: none;
-          }
-        }
-      }
-      .fu-stock-nums {
-        padding-bottom: 5px;
-        @media screen and (max-width: $break-1) {
-          text-align: right;
-        }
-        .fu-stock-trend {
-          color: $green-dark;
-          display: flex;
-          padding-left: 2px;
-          .fu-stock-trend-arrow {
-            @include arrow(10px, 5px, 'up', $green-dark);
-            float: left;
-            align-self: center;
-          }
-          .fu-stock-trend-perc {
-            padding: 0 0 0 5px;;
-            font-size: 14px;
-          }
-        }
-        .fu-stock-price {
-          font-size: 26px;
-          @media screen and (max-width: $break-1) {
-            font-size: 18px;
-          }
-        }
-      }
-    }
-    .fu-stock-right {
+    .fu-stock-item {
       display: flex;
-      padding: 7px 0;
+      justify-content: space-between;
+      box-sizing: border-box;
+      min-width: 320px;
+      width: 320px;
+      height: 135px;
+      max-width: 130px;
+      overflow: hidden;
+      background: white;
+      border: 1px solid #E0E0E0;
+      border-radius: 3px;
+      margin: 10px;
+      padding: 10px;
       @media screen and (max-width: $break-1) {
-        display: none;
+        height: 60px;
+        margin: 5px;
+        min-width: 290px;
+        width: 290px;
       }
-      .fu-stock-vert {
-        border-right: 1.5px solid $gray-verylight;
-        margin: 5px 8px;
-        .fu-stock-vert-arrow {
-          @include arrow(12px, 6px, 'right', $gray-verylight)
-        }
-      }
-      .fu-stock-vert-prices {
-        color: $gray-dark;
-        font-size: 14px;
+      .fu-stock-left {
         @extend .flex-col;
+        width: 50%;
         justify-content: space-between;
-        height: 100%;
-        .fu-stock-vert-high {
-
+        @media screen and (max-width: $break-1) {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
         }
-        .fu-stock-vert-low {
+        .fu-stock-sig {
+          width: 100%;
+          @media screen and (max-width: $break-1) {
+            width: 50%;
+          }
+          .fu-stock-title {
+            margin: 0;
+            font-size: 18px;
+            @include text-ellipsis();
+            @media screen and (max-width: $break-1) {
+              font-size: 14px;
+            }
+          }
+          .fu-stock-symbol {
+            color: $gray-light;
+            font-size: 14px;
+            @media screen and (max-width: $break-1) {
+              // display: none;
+            }
+          }
+        }
+        .fu-stock-nums {
+          padding-bottom: 5px;
+          @media screen and (max-width: $break-1) {
+            text-align: right;
+          }
+          .fu-stock-trend {
+            color: $green-dark;
+            display: flex;
+            padding-left: 2px;
+            .fu-stock-trend-arrow {
+              @include arrow(10px, 5px, 'up', $green-dark);
+              float: left;
+              align-self: center;
+            }
+            .fu-stock-trend-perc {
+              padding: 0 0 0 5px;;
+              font-size: 14px;
+            }
+          }
+          .fu-stock-price {
+            font-size: 26px;
+            @media screen and (max-width: $break-1) {
+              font-size: 18px;
+            }
+          }
+        }
+      }
+      .fu-stock-right {
+        display: flex;
+        padding: 7px 0;
+        @media screen and (max-width: $break-1) {
+          display: none;
+        }
+        .fu-stock-vert {
+          border-right: 1.5px solid $gray-verylight;
+          margin: 5px 8px;
+          .fu-stock-vert-arrow {
+            @include arrow(12px, 6px, 'right', $gray-verylight)
+          }
+        }
+        .fu-stock-vert-prices {
+          color: $gray-dark;
+          font-size: 14px;
+          @extend .flex-col;
+          justify-content: space-between;
+          height: 100%;
+          .fu-stock-vert-high {
 
+          }
+          .fu-stock-vert-low {
+
+          }
         }
       }
     }

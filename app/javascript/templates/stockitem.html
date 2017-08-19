@@ -1,0 +1,34 @@
+<div class="fu-stock-left">
+  <header class="fu-stock-sig">
+    <h2 class="fu-stock-title">
+      <%- name %>
+    </h2>
+    <div class="fu-stock-symbol">
+      <%- symbol %>
+    </div>
+  </header>
+  <footer class="fu-stock-nums">
+    <div class="fu-stock-trend">
+      <div class="fu-stock-trend-arrow"></div>
+      <div class="fu-stock-trend-perc">
+        <%- change %> (<%- perc %>%)
+      </div>
+    </div>
+    <div class="fu-stock-price">
+      $<%- price %>
+    </div>
+  </footer>
+</div>
+<div class="fu-stock-right">
+  <div class="fu-stock-vert">
+    <div class="fu-stock-vert-arrow"></div>
+  </div>
+  <div class="fu-stock-vert-prices">
+    <div class="fu-stock-vert-high">
+      $<%- high %>
+    </div>
+    <div class="fu-stock-vert-low">
+      $<%- low %>
+    </div>
+  </div>
+</div>

@@ -5,21 +5,33 @@
 #   gem 'sqlite3'
 #
 default: &default
-  adapter: sqlite3
+  adapter: mysql2
+  encoding: utf8
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
+  host: 127.0.0.1
 
 development:
   <<: *default
-  database: db/development.sqlite3
+  database: foreup_dev
+  username: root
+  password: root
+  port: 3306
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: db/test.sqlite3
+  database: foreup_test
+  username: root
+  password: root
+  port: 3306
 
+#In production, define the username and password by reading htem in from a file so that it isn't included here. That way, this database config file can still be included in the GIT repo, whereas the username and password files can be exlcuded from the repo.
 production:
   <<: *default
-  database: db/production.sqlite3
+  database: foreup_prod
+  #username: ...
+  #password: ...
+  #port: 3306
