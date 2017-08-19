@@ -9,7 +9,8 @@ export default class StockModel extends Backbone.Model {
       perc: '',
       price: '',
       high: '',
-      low: ''
+      low: '',
+      trend: ''
     };
   }
   validate(attrs) {
@@ -42,6 +43,10 @@ export default class StockModel extends Backbone.Model {
     }
     if (!attrs.low) {
       errors.text = 'low must be set';
+      hasError = true;
+    }
+    if (!attrs.trend) {
+      errors.text = 'trend must be set';
       hasError = true;
     }
 

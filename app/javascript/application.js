@@ -11,7 +11,16 @@ import Marionette from 'backbone.marionette';
 import StockView from './views/layout';
 import StockModel from './models/stock';
 
-const initialData = [];
+const initialData = [{
+  name: "Alphabet Inc.",
+  symbol: "GOOG",
+  change: "-0.31",
+  perc: "0.03",
+  price: "910.67",
+  high: "988.25",
+  low: "727.54",
+  trend: 'fu-stock-down'
+}];
 /*
 {
   name: "Alphabet Inc.",
@@ -20,7 +29,8 @@ const initialData = [];
   perc: "0.03",
   price: "910.67",
   high: "988.25",
-  low: "727.54"
+  low: "727.54",
+  trendarrow: ''
 }
 */
 

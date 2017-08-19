@@ -20,7 +20,7 @@ export default class StockView extends Marionette.LayoutView {
     }
   }
   onRender() {
-    console.log('on render');
+    // console.log('on render');
     //hide text that says "No stock yet!"
     if (this.collection.length) {
       this.ui.none.hide();
@@ -34,8 +34,9 @@ export default class StockView extends Marionette.LayoutView {
     return { add: 'itemAdded' };
   }
   onChildviewAddStockItem(child) {
-    const symbol = child.ui.symbol.val()
-    const url = `https://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20yahoo.finance.quote%20WHERE%20symbol%20%3D%20'${symbol}'&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=`
+    var trend;
+    const symbol = child.ui.symbol.val();
+    const url = `https://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20yahoo.finance.quote%20WHERE%20symbol%20%3D%20'${symbol}'&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=`;
 
     $.getJSON(url, (data) => {
       if (!data) {
@@ -48,6 +49,12 @@ export default class StockView extends Marionette.LayoutView {
       const quote = data.query.results.quote
       const perc  = ((parseFloat(quote.Change, 10) / parseFloat(quote.LastTradePriceOnly, 10)) * 100).toFixed(2)
 
+      if ( parseFloat(quote.Change) > 0 ) {
+        trend = 'fu-stock-up';
+      } else {
+        trend = 'fu-stock-down';
+      }
+      console.log('trend', trend);
       //set the model so that we can verify the data on it.
       this.model.set({
         name: quote.Name,
@@ -56,11 +63,12 @@ export default class StockView extends Marionette.LayoutView {
         perc: perc,
         price: quote.LastTradePriceOnly,
         high: quote.YearHigh,
-        low: quote.YearLow
+        low: quote.YearLow,
+        trend: trend
       });
       //check validitiy
       if (this.model.isValid()) {
-        const items = this.model.pick('name', 'symbol', 'change', 'perc', 'price', 'high', 'low');
+        const items = this.model.pick('name', 'symbol', 'change', 'perc', 'price', 'high', 'low', 'trend');
         //add new stock item
         this.collection.add(items);
       }
@@ -77,7 +85,8 @@ export default class StockView extends Marionette.LayoutView {
       perc: '',
       price: '',
       high: '',
-      low: ''
+      low: '',
+      trend: ''
     });
   }
 }

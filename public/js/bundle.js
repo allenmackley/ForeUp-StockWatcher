@@ -17350,7 +17350,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-const initialData = [];
+const initialData = [{
+  name: "Alphabet Inc.",
+  symbol: "GOOG",
+  change: "-0.31",
+  perc: "0.03",
+  price: "910.67",
+  high: "988.25",
+  low: "727.54",
+  trend: 'fu-stock-down'
+}];
 /*
 {
   name: "Alphabet Inc.",
@@ -17359,7 +17368,8 @@ const initialData = [];
   perc: "0.03",
   price: "910.67",
   high: "988.25",
-  low: "727.54"
+  low: "727.54",
+  trendarrow: ''
 }
 */
 
@@ -18080,7 +18090,7 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___defaul
     }
   }
   onRender() {
-    console.log('on render');
+    // console.log('on render');
     //hide text that says "No stock yet!"
     if (this.collection.length) {
       this.ui.none.hide();
@@ -18094,8 +18104,9 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___defaul
     return { add: 'itemAdded' };
   }
   onChildviewAddStockItem(child) {
-    const symbol = child.ui.symbol.val()
-    const url = `https://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20yahoo.finance.quote%20WHERE%20symbol%20%3D%20'${symbol}'&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=`
+    var trend;
+    const symbol = child.ui.symbol.val();
+    const url = `https://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20yahoo.finance.quote%20WHERE%20symbol%20%3D%20'${symbol}'&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=`;
 
     __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.getJSON(url, (data) => {
       if (!data) {
@@ -18108,6 +18119,12 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___defaul
       const quote = data.query.results.quote
       const perc  = ((parseFloat(quote.Change, 10) / parseFloat(quote.LastTradePriceOnly, 10)) * 100).toFixed(2)
 
+      if ( parseFloat(quote.Change) > 0 ) {
+        trend = 'fu-stock-up';
+      } else {
+        trend = 'fu-stock-down';
+      }
+      console.log('trend', trend);
       //set the model so that we can verify the data on it.
       this.model.set({
         name: quote.Name,
@@ -18116,11 +18133,12 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___defaul
         perc: perc,
         price: quote.LastTradePriceOnly,
         high: quote.YearHigh,
-        low: quote.YearLow
+        low: quote.YearLow,
+        trend: trend
       });
       //check validitiy
       if (this.model.isValid()) {
-        const items = this.model.pick('name', 'symbol', 'change', 'perc', 'price', 'high', 'low');
+        const items = this.model.pick('name', 'symbol', 'change', 'perc', 'price', 'high', 'low', 'trend');
         //add new stock item
         this.collection.add(items);
       }
@@ -18137,7 +18155,8 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___defaul
       perc: '',
       price: '',
       high: '',
-      low: ''
+      low: '',
+      trend: ''
     });
   }
 }
@@ -18224,7 +18243,6 @@ class Stock extends __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default.a.
 }
 class ListView extends __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default.a.CollectionView {
   constructor(options) {
-    //options.el: '.fu-stocks'
     options.tagName = 'ul';
     options.className = 'fu-stocks';
     options.childView = Stock
@@ -18246,7 +18264,11 @@ __p+='<div class="fu-stock-left">\n  <header class="fu-stock-sig">\n    <h2 clas
 ((__t=( name ))==null?'':_.escape(__t))+
 '\n    </h2>\n    <div class="fu-stock-symbol">\n      '+
 ((__t=( symbol ))==null?'':_.escape(__t))+
-'\n    </div>\n  </header>\n  <footer class="fu-stock-nums">\n    <div class="fu-stock-trend">\n      <div class="fu-stock-trend-arrow fu-stock-trend-arrow-green"></div>\n      <div class="fu-stock-trend-perc">\n        '+
+'\n    </div>\n  </header>\n  <footer class="fu-stock-nums">\n    <div class="fu-stock-trend">\n      <div class="fu-stock-trend-arrow '+
+((__t=( trend ))==null?'':_.escape(__t))+
+'"></div>\n      <div class="fu-stock-trend-perc '+
+((__t=( trend ))==null?'':_.escape(__t))+
+'">\n        '+
 ((__t=( change ))==null?'':_.escape(__t))+
 ' ('+
 ((__t=( perc ))==null?'':_.escape(__t))+
@@ -18294,7 +18316,8 @@ class StockModel extends __WEBPACK_IMPORTED_MODULE_0_backbone___default.a.Model 
       perc: '',
       price: '',
       high: '',
-      low: ''
+      low: '',
+      trend: ''
     };
   }
   validate(attrs) {
@@ -18327,6 +18350,10 @@ class StockModel extends __WEBPACK_IMPORTED_MODULE_0_backbone___default.a.Model 
     }
     if (!attrs.low) {
       errors.text = 'low must be set';
+      hasError = true;
+    }
+    if (!attrs.trend) {
+      errors.text = 'trend must be set';
       hasError = true;
     }
 

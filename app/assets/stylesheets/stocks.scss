@@ -188,23 +188,27 @@ h1 {
             text-align: right;
           }
           .fu-stock-trend {
-            color: $green-dark;
             display: flex;
             padding-left: 2px;
             .fu-stock-trend-arrow {
               float: left;
               align-self: center;
-              &.fu-stock-trend-arrow-green {
+              &.fu-stock-up {
                 @include arrow(10px, 5px, 'up', $green-dark);
               }
-              &.fu-stock-trend-arrow-red {
+              &.fu-stock-down {
                 @include arrow(10px, 5px, 'down', red);
               }
             }
-
             .fu-stock-trend-perc {
               padding: 0 0 0 5px;;
               font-size: 14px;
+              &.fu-stock-up {
+                color: $green-dark;
+              }
+              &.fu-stock-down {
+                color: red;
+              }
             }
           }
           .fu-stock-price {
