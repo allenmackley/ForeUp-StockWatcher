@@ -18,15 +18,15 @@ Stock data updates so regularly, that we'd need to query the Yahoo API on every 
 ##### Advantages:
 We can get a one-page-app feel without using client-side templating. We can use ERB or HAML for templating. This could result in greater simplicity and faster loading.
 ##### Disadvantages:
-Turbolinks can sometimes interfere with other JavaScript libraries that were poorly design and didn't namespace their CSS selectors.
-Although server side templating is convienent, sometimes we need to set the state using JavaScript the first time the view is displayed. In this case, the stock arrow on the right of every item block. Rendering the template and then applying state changes with JavaScript later can create a "jumping" effect where UI components assemble in steps and this appears un-professional. It may be better, then, to assemble the entire component and its state before first displaying it.
+Turbolinks can sometimes interfere with other JavaScript libraries that were poorly designed and didn't namespace their CSS selectors.
+Although server side templating is convienent, sometimes we need to set the state using JavaScript the first time the view is displayed. In this case, the stock arrow on the right of every item block. Rendering the template and then applying state changes with JavaScript later can create a "jumping" effect where UI components assemble in steps and this appears un-professional. It may be better, then, to assemble the entire component and its state before first rendering it.
 
 #### Way #3
 1. Have the form do a GET request directly to the API using AJAX
 2. Process the returned data with JavaScript  
     * We could process it manually with jQuery
     * We could use React components
-    * We could use Backbone View Models
+    * We could use Backbone/Marionette View Models
 3. Add each item as we request it
 4. On page reload, the data is gone. We would need to request it again.
 ##### Advantages:
@@ -40,11 +40,11 @@ Also, if SEO is of a concern, we lose that here because client-side templates ar
 1. Have the form do a POST request to our server using AJAX
 2. Query the API.
 3. Persist the data in our own database.
-4. Process the returned data with JavaScript
+4. Process the returned data with JavaScript like in Way #3
 ##### Advantages:
 We get the data persistence, plus client-side templating.
 ##### Disadvantages:
-The provided deign docs don't have a delete button on each stock item block, so I'm assuming this method isn't what the test has in mind, and that for this small demo saving session state isn't important.
+The provided design docs don't have a delete button on each stock item block, so I'm assuming this method isn't what the test has in mind, and that for this small demo saving session state isn't important.
 
 #### Therefore, I'm going to choose Way #3.
 1. First step is to build the layout and CSS
