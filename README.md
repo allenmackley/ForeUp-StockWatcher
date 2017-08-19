@@ -1,3 +1,4 @@
+# Thought Process...
 ### There are several ways that the API can be accessed:
 #### Way #1:
 1. Submit the form data to Rails.
@@ -10,7 +11,7 @@
 If we can find a way to query the Yahoo API less often, or in the background, persisting the data to our own database will make our page refresh much faster because we aren't waiting on a cross-origin request to process and return the data.
 
 ##### Disadvantages:
-Stock data updates so regularly, that we'd need to query the Yahoo API on every page refresh, or on some interveral, so do we really need to store all the stock data in our database? Consider storing just the stock symbol. Luckily, this API responds very quickly.
+Stock data updates so regularly, that we'd need to query the Yahoo API on every page refresh, or on some interveral, so do we really need to store all the stock data in our database? Consider storing just the stock symbol. Luckily, this API responds very quickly so it might not be necessary to persist the data in this case.
 
 #### Way #2
 1. Similar to Way #1, but we use Turbolinks so that there is no page reload.
