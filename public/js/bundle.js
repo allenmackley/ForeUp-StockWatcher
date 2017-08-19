@@ -18058,18 +18058,12 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// Backbone.Baby
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__list__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__templates_layout_html__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__templates_layout_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__templates_layout_html__);
-// const Backbone   = require('backbone');
-// const Marionette = require('backbone.marionette');
-// const StockModel = require('../models/stock');
-// const FormView   = require('./form');
-// const ListView   = require('./list');
 
 
 
 
 
 
-//this is our form and stock list, composited into one view template
 class StockView extends __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___default.a.LayoutView {
   constructor(options) {
     options.template = __WEBPACK_IMPORTED_MODULE_4__templates_layout_html___default.a;
@@ -18089,9 +18083,8 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___defaul
     console.log('on render');
     //hide text that says "No stock yet!"
     if (this.collection.length) {
-      this.ui.none.hide()
+      this.ui.none.hide();
     }
-
     const formView = new __WEBPACK_IMPORTED_MODULE_2__form__["a" /* default */]({model: this.model});
     const listView = new __WEBPACK_IMPORTED_MODULE_3__list__["a" /* default */]({collection: this.collection});
     this.showChildView('form', formView);
@@ -18101,7 +18094,6 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___defaul
     return { add: 'itemAdded' };
   }
   onChildviewAddStockItem(child) {
-    console.log('child', child)
     const symbol = child.ui.symbol.val()
     const url = `https://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20yahoo.finance.quote%20WHERE%20symbol%20%3D%20'${symbol}'&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=`
 
@@ -18130,14 +18122,14 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___defaul
       if (this.model.isValid()) {
         const items = this.model.pick('name', 'symbol', 'change', 'perc', 'price', 'high', 'low');
         //add new stock item
-        console.log('add item', items)
         this.collection.add(items);
       }
       //focus it again so we can easily add another stock
       child.ui.symbol.focus()
     })
   }
-  itemAdded(model, col) {
+  itemAdded() {
+    this.ui.none.hide();
     this.model.set({
       name: '',
       symbol: '',
