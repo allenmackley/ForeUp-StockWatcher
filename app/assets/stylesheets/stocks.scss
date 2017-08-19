@@ -229,6 +229,8 @@ h1 {
           border-right: 1.5px solid $gray-verylight;
           margin: 5px 8px;
           .fu-stock-vert-arrow {
+            position: relative;
+            margin-top: -6px;
             @include arrow(12px, 6px, 'right', $gray-verylight)
           }
         }

@@ -17350,26 +17350,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-const initialData = [{
-  name: "Alphabet Inc.",
-  symbol: "GOOG",
-  change: "-0.31",
-  perc: "0.03",
-  price: "910.67",
-  high: "988.25",
-  low: "727.54",
-  trend: 'fu-stock-down'
-}];
+const initialData = [];
 /*
 {
   name: "Alphabet Inc.",
   symbol: "GOOG",
   change: "-0.31",
-  perc: "0.03",
+  perc: "-0.03",
   price: "910.67",
   high: "988.25",
   low: "727.54",
-  trendarrow: ''
+  trend: 'fu-stock-down',
+  range: 50
 }
 */
 
@@ -18104,11 +18096,11 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___defaul
     return { add: 'itemAdded' };
   }
   onChildviewAddStockItem(child) {
-    var trend;
     const symbol = child.ui.symbol.val();
     const url = `https://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20yahoo.finance.quote%20WHERE%20symbol%20%3D%20'${symbol}'&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=`;
 
     __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.getJSON(url, (data) => {
+      let trend;
       if (!data) {
         alert("Could not retrieve stock data.")
         return
@@ -18116,15 +18108,22 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___defaul
         alert("Enter a four character stock symbol and try again.")
         return
       }
-      const quote = data.query.results.quote
-      const perc  = ((parseFloat(quote.Change, 10) / parseFloat(quote.LastTradePriceOnly, 10)) * 100).toFixed(2)
+      const
+        quote    = data.query.results.quote,
+        price    = parseFloat(quote.LastTradePriceOnly, 10),
+        change   = parseFloat(quote.Change, 10),
+        perc     = ((change / price) * 100).toFixed(2),
+        high     = parseFloat(quote.DaysHigh, 10),
+        low      = parseFloat(quote.DaysLow, 10),
+        dayDiff  = high - low,
+        curDiff  = high - price,
+        range    = (curDiff / dayDiff) * 100;
 
       if ( parseFloat(quote.Change) > 0 ) {
         trend = 'fu-stock-up';
       } else {
         trend = 'fu-stock-down';
       }
-      console.log('trend', trend);
       //set the model so that we can verify the data on it.
       this.model.set({
         name: quote.Name,
@@ -18132,13 +18131,14 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___defaul
         change: quote.Change,
         perc: perc,
         price: quote.LastTradePriceOnly,
-        high: quote.YearHigh,
-        low: quote.YearLow,
-        trend: trend
+        high: quote.DaysHigh,
+        low: quote.DaysLow,
+        trend: trend,
+        range: range
       });
       //check validitiy
       if (this.model.isValid()) {
-        const items = this.model.pick('name', 'symbol', 'change', 'perc', 'price', 'high', 'low', 'trend');
+        const items = this.model.pick('name', 'symbol', 'change', 'perc', 'price', 'high', 'low', 'trend', 'range');
         //add new stock item
         this.collection.add(items);
       }
@@ -18156,7 +18156,8 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___defaul
       price: '',
       high: '',
       low: '',
-      trend: ''
+      trend: '',
+      range: ''
     });
   }
 }
@@ -18274,7 +18275,9 @@ __p+='<div class="fu-stock-left">\n  <header class="fu-stock-sig">\n    <h2 clas
 ((__t=( perc ))==null?'':_.escape(__t))+
 '%)\n      </div>\n    </div>\n    <div class="fu-stock-price">\n      $'+
 ((__t=( price ))==null?'':_.escape(__t))+
-'\n    </div>\n  </footer>\n</div>\n<div class="fu-stock-right">\n  <div class="fu-stock-vert">\n    <div class="fu-stock-vert-arrow"></div>\n  </div>\n  <div class="fu-stock-vert-prices">\n    <div class="fu-stock-vert-high">\n      $'+
+'\n    </div>\n  </footer>\n</div>\n<div class="fu-stock-right">\n  <div class="fu-stock-vert">\n    <div class="fu-stock-vert-arrow" style="top: '+
+((__t=( range ))==null?'':_.escape(__t))+
+'%"></div>\n  </div>\n  <div class="fu-stock-vert-prices">\n    <div class="fu-stock-vert-high">\n      $'+
 ((__t=( high ))==null?'':_.escape(__t))+
 '\n    </div>\n    <div class="fu-stock-vert-low">\n      $'+
 ((__t=( low ))==null?'':_.escape(__t))+
@@ -18317,7 +18320,8 @@ class StockModel extends __WEBPACK_IMPORTED_MODULE_0_backbone___default.a.Model 
       price: '',
       high: '',
       low: '',
-      trend: ''
+      trend: '',
+      range: ''
     };
   }
   validate(attrs) {

@@ -10,7 +10,8 @@ export default class StockModel extends Backbone.Model {
       price: '',
       high: '',
       low: '',
-      trend: ''
+      trend: '',
+      range: ''
     };
   }
   validate(attrs) {
