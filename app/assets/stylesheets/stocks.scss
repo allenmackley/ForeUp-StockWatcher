@@ -106,7 +106,7 @@ h1 {
     }
   }
 }
-.fu-stock-display {  
+.fu-stock-display {
   @media screen and (max-width: $break-1) {
     flex-direction: column;
     align-items: center;
@@ -192,10 +192,16 @@ h1 {
             display: flex;
             padding-left: 2px;
             .fu-stock-trend-arrow {
-              @include arrow(10px, 5px, 'up', $green-dark);
               float: left;
               align-self: center;
+              &.fu-stock-trend-arrow-green {
+                @include arrow(10px, 5px, 'up', $green-dark);
+              }
+              &.fu-stock-trend-arrow-red {
+                @include arrow(10px, 5px, 'down', red);
+              }
             }
+
             .fu-stock-trend-perc {
               padding: 0 0 0 5px;;
               font-size: 14px;
