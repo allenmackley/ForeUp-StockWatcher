@@ -3,19 +3,6 @@ import FormView from './form';
 import ListView from './list';
 import LayoutTemplate from '../templates/layout.html';
 
-// var MessageCollection = Backbone.Collection.extend({
-//     url: '/messages',
-//     model: MessageModel,
-//     parse:function(response){
-//         // here you can manipulate your collection value depending on the response
-//         var myFilteredData = [];
-//         myFilteredData = myFilteredData.push(response.foo);
-//         myFilteredData = myFilteredData.concat(response.followings);
-//         // or whatever you need
-//         return myFilteredData;
-//     }
-// });
-
 export default class StockView extends Marionette.LayoutView {
   constructor(options) {
     options.template = LayoutTemplate;

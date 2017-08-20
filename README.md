@@ -2,6 +2,7 @@
 1. `cd` to the project folder and run bundle update to install gems.
 2. run `rails s` to start the Rails WEBrick server.
 3. navigate to `localhost:3000`
+4. Try it out by entering GOOG for Google stock and ABAA for Altaba Inc stock. If you try YHOO for Yahoo, the API returns missing data, and so an error is triggered and the stock isn't added. This is because Yahoo is now owned by Altaba and the stock symbol for YHOO is no longer valid, so we prevent adding it.
 # Thought Process...
 ### There are several ways that the API can be accessed:
 #### Way #1:

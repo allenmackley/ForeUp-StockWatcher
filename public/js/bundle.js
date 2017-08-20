@@ -18081,19 +18081,6 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// Backbone.Baby
 
 
 
-// var MessageCollection = Backbone.Collection.extend({
-//     url: '/messages',
-//     model: MessageModel,
-//     parse:function(response){
-//         // here you can manipulate your collection value depending on the response
-//         var myFilteredData = [];
-//         myFilteredData = myFilteredData.push(response.foo);
-//         myFilteredData = myFilteredData.concat(response.followings);
-//         // or whatever you need
-//         return myFilteredData;
-//     }
-// });
-
 class StockView extends __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default.a.LayoutView {
   constructor(options) {
     options.template = __WEBPACK_IMPORTED_MODULE_3__templates_layout_html___default.a;
@@ -18317,40 +18304,18 @@ class StockModel extends __WEBPACK_IMPORTED_MODULE_1_backbone___default.a.Model 
     const errors = {};
     let hasError = false;
 
-    if (!attrs.name) {
-      errors.assignee = 'name must be set';
-      hasError = true;
-    }
-    if (!attrs.symbol) {
-      errors.text = 'symbol must be set';
-      hasError = true;
-    }
-    if (!attrs.change) {
-      errors.text = 'change must be set';
-      hasError = true;
-    }
-    if (!attrs.perc) {
-      errors.text = 'perc must be set';
-      hasError = true;
-    }
-    if (!attrs.price) {
-      errors.text = 'price must be set';
-      hasError = true;
-    }
-    if (!attrs.high) {
-      errors.text = 'high must be set';
-      hasError = true;
-    }
-    if (!attrs.low) {
-      errors.text = 'low must be set';
-      hasError = true;
-    }
-    if (!attrs.trend) {
-      errors.text = 'trend must be set';
-      hasError = true;
-    }
+    const testProps = ['name', 'symbol', 'change', 'perc', 'price', 'high', 'low', 'trend'];
+
+    const allAttrsExist = testProps.forEach((value) => {
+      if (!attrs[value]) {
+        errors.text = `${value} must be set`;
+        hasError = true;
+        return false;
+      }
+    });
 
     if (hasError) {
+      console.error(errors);
       alert("Couldn't find stock. Please try another symbol.")
       return errors;
     }

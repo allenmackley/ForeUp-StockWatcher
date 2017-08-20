@@ -19,40 +19,18 @@ export default class StockModel extends Backbone.Model {
     const errors = {};
     let hasError = false;
 
-    if (!attrs.name) {
-      errors.assignee = 'name must be set';
-      hasError = true;
-    }
-    if (!attrs.symbol) {
-      errors.text = 'symbol must be set';
-      hasError = true;
-    }
-    if (!attrs.change) {
-      errors.text = 'change must be set';
-      hasError = true;
-    }
-    if (!attrs.perc) {
-      errors.text = 'perc must be set';
-      hasError = true;
-    }
-    if (!attrs.price) {
-      errors.text = 'price must be set';
-      hasError = true;
-    }
-    if (!attrs.high) {
-      errors.text = 'high must be set';
-      hasError = true;
-    }
-    if (!attrs.low) {
-      errors.text = 'low must be set';
-      hasError = true;
-    }
-    if (!attrs.trend) {
-      errors.text = 'trend must be set';
-      hasError = true;
-    }
+    const testProps = ['name', 'symbol', 'change', 'perc', 'price', 'high', 'low', 'trend'];
+
+    const allAttrsExist = testProps.forEach((value) => {
+      if (!attrs[value]) {
+        errors.text = `${value} must be set`;
+        hasError = true;
+        return false;
+      }
+    });
 
     if (hasError) {
+      console.error(errors);
       alert("Couldn't find stock. Please try another symbol.")
       return errors;
     }
