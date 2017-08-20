@@ -55,7 +55,8 @@ export default class StockView extends Marionette.LayoutView {
         low      = parseFloat(quote.DaysLow, 10),
         dayDiff  = high - low,
         curDiff  = high - price,
-        range    = (curDiff / dayDiff) * 100;
+        range    = (curDiff / dayDiff) * 100,
+        { symbol, Name: name } = quote;
 
       if ( parseFloat(quote.Change) > 0 ) {
         trend = 'fu-stock-up';
@@ -63,11 +64,7 @@ export default class StockView extends Marionette.LayoutView {
         trend = 'fu-stock-down';
       }
       //set the model so that we can verify the data on it.
-      this.model.set({
-        name: quote.Name,
-        symbol: quote.symbol,
-        change, price, high, low, perc, trend, range
-      });
+      this.model.set({name, symbol, change, price, high, low, perc, trend, range});
       //check validitiy
       if (this.model.isValid()) {
         const items = this.model.pick('name', 'symbol', 'change', 'perc', 'price', 'high', 'low', 'trend', 'range');
