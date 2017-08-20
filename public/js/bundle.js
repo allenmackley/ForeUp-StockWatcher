@@ -18205,7 +18205,7 @@ var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments
 with(obj||{}){
 __p+='<input type="text" name="symbol" id="symbol" value="'+
 ((__t=( symbol ))==null?'':_.escape(__t))+
-'" placeholder="Enter stock symbol..." class="fu-stock-symbol-field">\n<button class="fu-stock-submit">Add</button>\n';
+'" placeholder="Enter stock symbol..." class="fu-stock-symbol-field" pattern="[A-Za-z]{4}" title="Four digit stock symbol" required>\n<button class="fu-stock-submit">Add</button>\n';
 }
 return __p;
 };
