@@ -66,13 +66,7 @@ export default class StockView extends Marionette.LayoutView {
       this.model.set({
         name: quote.Name,
         symbol: quote.symbol,
-        change: quote.Change,
-        perc: perc,
-        price: quote.LastTradePriceOnly,
-        high: quote.DaysHigh,
-        low: quote.DaysLow,
-        trend: trend,
-        range: range
+        change, price, high, low, perc, trend, range
       });
       //check validitiy
       if (this.model.isValid()) {
