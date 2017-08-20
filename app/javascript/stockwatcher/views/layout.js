@@ -42,7 +42,7 @@ export default class StockView extends Marionette.LayoutView {
         //add new stock item
         this.collection.add(items);
       }
-      //focus it again so we can easily add another stock
+      //focus the input field again so we can easily add another stock
       child.ui.symbol.focus()
     });
   }

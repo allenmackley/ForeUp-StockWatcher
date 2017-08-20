@@ -18120,10 +18120,9 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___defaul
         //add new stock item
         this.collection.add(items);
       }
-      //focus it again so we can easily add another stock
+      //focus the input field again so we can easily add another stock
       child.ui.symbol.focus()
-    })
-
+    });
   }
   itemAdded() {
     this.ui.none.hide();
@@ -18341,39 +18340,47 @@ class StockModel extends __WEBPACK_IMPORTED_MODULE_1_backbone___default.a.Model 
       return errors;
     }
   }
+  confirmData(data) {
+    if (!data) {
+      alert("Could not retrieve stock data.")
+      return false;
+    } else if (!data.query.results) {
+      alert("Enter a four character stock symbol and try again.")
+      return false;
+    }
+    return true;
+  }
+  parseData(data) {
+    let trend;
+    const
+      quote    = data.query.results.quote,
+      price    = parseFloat(quote.LastTradePriceOnly, 10),
+      change   = parseFloat(quote.Change, 10),
+      perc     = ((change / price) * 100).toFixed(2),
+      high     = parseFloat(quote.DaysHigh, 10),
+      low      = parseFloat(quote.DaysLow, 10),
+      dayDiff  = high - low,
+      curDiff  = high - price,
+      range    = (curDiff / dayDiff) * 100,
+      { symbol, Name: name } = quote;
+
+    if ( parseFloat(quote.Change) > 0 ) {
+      trend = 'fu-stock-up';
+    } else {
+      trend = 'fu-stock-down';
+    }
+    //set the model so that we can verify the data on it.
+    return {name, symbol, change, price, high, low, perc, trend, range};
+  }
+  buildQueryString(symbol) {
+    return `https://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20yahoo.finance.quote%20WHERE%20symbol%20%3D%20'${symbol}'&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=`;
+  }
   queryYahoo(symbol) {
-    const url = `https://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20yahoo.finance.quote%20WHERE%20symbol%20%3D%20'${symbol}'&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=`;
-
+    const url = this.buildQueryString(symbol);
     return __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.getJSON(url, (data) => {
-      let trend;
-      if (!data) {
-        alert("Could not retrieve stock data.")
-        return
-      } else if (!data.query.results) {
-        alert("Enter a four character stock symbol and try again.")
-        return
+      if ( this.confirmData(data) ) {
+        this.set( this.parseData(data) );
       }
-      const
-        quote    = data.query.results.quote,
-        price    = parseFloat(quote.LastTradePriceOnly, 10),
-        change   = parseFloat(quote.Change, 10),
-        perc     = ((change / price) * 100).toFixed(2),
-        high     = parseFloat(quote.DaysHigh, 10),
-        low      = parseFloat(quote.DaysLow, 10),
-        dayDiff  = high - low,
-        curDiff  = high - price,
-        range    = (curDiff / dayDiff) * 100,
-        { symbol, Name: name } = quote;
-
-      if ( parseFloat(quote.Change) > 0 ) {
-        trend = 'fu-stock-up';
-      } else {
-        trend = 'fu-stock-down';
-      }
-      //set the model so that we can verify the data on it.
-      this.set({name, symbol, change, price, high, low, perc, trend, range});
-
-      console.log('this', this)
     });
   }
 }
