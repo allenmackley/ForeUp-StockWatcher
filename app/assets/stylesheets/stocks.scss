@@ -177,9 +177,8 @@ h1 {
           .fu-stock-symbol {
             color: $gray-light;
             font-size: 14px;
-            @media screen and (max-width: $break-1) {
-              // display: none;
-            }
+            margin: 0;
+            font-weight: normal;
           }
         }
         .fu-stock-nums {

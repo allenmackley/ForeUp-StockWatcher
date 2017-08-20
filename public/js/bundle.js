@@ -18228,14 +18228,14 @@ return __p;
 class Stock extends __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default.a.LayoutView {
   constructor(options) {
     options.template = __WEBPACK_IMPORTED_MODULE_1__templates_stockitem_html___default.a;
-    options.tagName = 'li';
+    options.tagName = 'article';
     options.className = 'fu-stock-item';
     super(options);
   }
 }
 class ListView extends __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default.a.CollectionView {
   constructor(options) {
-    options.tagName = 'ul';
+    options.tagName = 'div';
     options.className = 'fu-stocks';
     options.childView = Stock
     super(options);
@@ -18252,11 +18252,11 @@ class ListView extends __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default
 /* WEBPACK VAR INJECTION */(function(_) {module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
-__p+='<div class="fu-stock-left">\n  <header class="fu-stock-sig">\n    <h2 class="fu-stock-title">\n      '+
+__p+='<section class="fu-stock-left">\n  <header class="fu-stock-sig">\n    <h2 class="fu-stock-title">\n      '+
 ((__t=( name ))==null?'':_.escape(__t))+
-'\n    </h2>\n    <div class="fu-stock-symbol">\n      '+
+'\n    </h2>\n    <h3 class="fu-stock-symbol">\n      '+
 ((__t=( symbol ))==null?'':_.escape(__t))+
-'\n    </div>\n  </header>\n  <footer class="fu-stock-nums">\n    <div class="fu-stock-trend">\n      <div class="fu-stock-trend-arrow '+
+'\n    </h3>\n  </header>\n  <footer class="fu-stock-nums">\n    <div class="fu-stock-trend">\n      <div class="fu-stock-trend-arrow '+
 ((__t=( trend ))==null?'':_.escape(__t))+
 '"></div>\n      <div class="fu-stock-trend-perc '+
 ((__t=( trend ))==null?'':_.escape(__t))+
@@ -18266,13 +18266,13 @@ __p+='<div class="fu-stock-left">\n  <header class="fu-stock-sig">\n    <h2 clas
 ((__t=( perc ))==null?'':_.escape(__t))+
 '%)\n      </div>\n    </div>\n    <div class="fu-stock-price">\n      $'+
 ((__t=( price ))==null?'':_.escape(__t))+
-'\n    </div>\n  </footer>\n</div>\n<div class="fu-stock-right">\n  <div class="fu-stock-vert">\n    <div class="fu-stock-vert-arrow" style="top: '+
+'\n    </div>\n  </footer>\n</section>\n<aside class="fu-stock-right">\n  <div class="fu-stock-vert">\n    <div class="fu-stock-vert-arrow" style="top: '+
 ((__t=( range ))==null?'':_.escape(__t))+
 '%"></div>\n  </div>\n  <div class="fu-stock-vert-prices">\n    <div class="fu-stock-vert-high">\n      $'+
 ((__t=( high ))==null?'':_.escape(__t))+
 '\n    </div>\n    <div class="fu-stock-vert-low">\n      $'+
 ((__t=( low ))==null?'':_.escape(__t))+
-'\n    </div>\n  </div>\n</div>\n';
+'\n    </div>\n  </div>\n</aside>\n';
 }
 return __p;
 };
@@ -18286,7 +18286,7 @@ return __p;
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
-__p+='<header class="fu-stock-header">\n  <h1>\n    Stock Watcher\n  </h1>\n  <div class="fu-stock-form-cont"></div>\n</header>\n<div class="fu-stock-display">\n  <div class="fu-stocks-cont"></div>\n  <div class="fu-stock-none">\n    No stocks yet!\n  </div>\n</div>\n';
+__p+='<header class="fu-stock-header">\n  <h1>\n    Stock Watcher\n  </h1>\n  <div class="fu-stock-form-cont"></div>\n</header>\n<main class="fu-stock-display">\n  <section class="fu-stocks-cont"></section>\n  <section class="fu-stock-none">\n    No stocks yet!\n  </section>\n</main>\n';
 }
 return __p;
 };
