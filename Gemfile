@@ -36,7 +36,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'haml'
 gem 'haml-rails'
 
-gem 'mysql2'
+# gem 'mysql2'
 
 # gem 'webpacker'
 
