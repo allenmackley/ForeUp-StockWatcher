@@ -18125,8 +18125,6 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___defaul
       } else {
         trend = 'fu-stock-down';
       }
-
-
       //set the model so that we can verify the data on it.
       this.model.set({name, symbol, change, price, high, low, perc, trend, range});
       //check validitiy
