@@ -93,10 +93,14 @@ export default class StockModel extends Backbone.Model {
     return `https://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20yahoo.finance.quote%20WHERE%20symbol%20%3D%20'${symbol}'&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=`;
   }
   queryYahoo(symbol) {
-    const url = this.buildQueryString(symbol);
-    return $.getJSON(url, (data) => {
-      if ( this.confirmData(data) ) {
-        this.set( this.parseData(data) );
+    this.urlRoot = this.buildQueryString(symbol);
+
+    this.fetch({
+      success: (res, data) => {
+        if ( this.confirmData(data) ) {
+          this.set( this.parseData(data) );
+          this.trigger('fetched');
+        }
       }
     });
   }

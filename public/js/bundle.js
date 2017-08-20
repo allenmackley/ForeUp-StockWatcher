@@ -18081,6 +18081,19 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// Backbone.Baby
 
 
 
+// var MessageCollection = Backbone.Collection.extend({
+//     url: '/messages',
+//     model: MessageModel,
+//     parse:function(response){
+//         // here you can manipulate your collection value depending on the response
+//         var myFilteredData = [];
+//         myFilteredData = myFilteredData.push(response.foo);
+//         myFilteredData = myFilteredData.concat(response.followings);
+//         // or whatever you need
+//         return myFilteredData;
+//     }
+// });
+
 class StockView extends __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default.a.LayoutView {
   constructor(options) {
     options.template = __WEBPACK_IMPORTED_MODULE_3__templates_layout_html___default.a;
@@ -18097,7 +18110,6 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___defaul
     }
   }
   onRender() {
-    // console.log('on render');
     //hide text that says "No stock yet!"
     if (this.collection.length) {
       this.ui.none.hide();
@@ -18110,19 +18122,24 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___defaul
   collectionEvents() {
     return { add: 'itemAdded' };
   }
+  modelEvents() {
+    return { fetched: 'fetchComplete' };
+  }
+  fetchComplete() {
+    console.log('fetch complete');
+    //check validitiy
+    if (this.model.isValid()) {
+      const items = this.model.pick('name', 'symbol', 'change', 'perc', 'price', 'high', 'low', 'trend', 'range');
+      //add new stock item
+      this.collection.add(items);
+    }
+  }
   onChildviewAddStockItem(child) {
     const symbol = child.ui.symbol.val();
 
-    this.model.queryYahoo(symbol).done(() => {
-      //check validitiy
-      if (this.model.isValid()) {
-        const items = this.model.pick('name', 'symbol', 'change', 'perc', 'price', 'high', 'low', 'trend', 'range');
-        //add new stock item
-        this.collection.add(items);
-      }
-      //focus the input field again so we can easily add another stock
-      child.ui.symbol.focus()
-    });
+    this.model.queryYahoo(symbol);
+    //focus the input field again so we can easily add another stock
+    child.ui.symbol.focus()
   }
   itemAdded() {
     this.ui.none.hide();
@@ -18376,10 +18393,14 @@ class StockModel extends __WEBPACK_IMPORTED_MODULE_1_backbone___default.a.Model 
     return `https://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20yahoo.finance.quote%20WHERE%20symbol%20%3D%20'${symbol}'&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=`;
   }
   queryYahoo(symbol) {
-    const url = this.buildQueryString(symbol);
-    return __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.getJSON(url, (data) => {
-      if ( this.confirmData(data) ) {
-        this.set( this.parseData(data) );
+    this.urlRoot = this.buildQueryString(symbol);
+
+    this.fetch({
+      success: (res, data) => {
+        if ( this.confirmData(data) ) {
+          this.set( this.parseData(data) );
+          this.trigger('fetched');
+        }
       }
     });
   }

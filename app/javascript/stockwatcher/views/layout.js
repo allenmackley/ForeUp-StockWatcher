@@ -3,6 +3,19 @@ import FormView from './form';
 import ListView from './list';
 import LayoutTemplate from '../templates/layout.html';
 
+// var MessageCollection = Backbone.Collection.extend({
+//     url: '/messages',
+//     model: MessageModel,
+//     parse:function(response){
+//         // here you can manipulate your collection value depending on the response
+//         var myFilteredData = [];
+//         myFilteredData = myFilteredData.push(response.foo);
+//         myFilteredData = myFilteredData.concat(response.followings);
+//         // or whatever you need
+//         return myFilteredData;
+//     }
+// });
+
 export default class StockView extends Marionette.LayoutView {
   constructor(options) {
     options.template = LayoutTemplate;
@@ -19,7 +32,6 @@ export default class StockView extends Marionette.LayoutView {
     }
   }
   onRender() {
-    // console.log('on render');
     //hide text that says "No stock yet!"
     if (this.collection.length) {
       this.ui.none.hide();
@@ -32,19 +44,24 @@ export default class StockView extends Marionette.LayoutView {
   collectionEvents() {
     return { add: 'itemAdded' };
   }
+  modelEvents() {
+    return { fetched: 'fetchComplete' };
+  }
+  fetchComplete() {
+    console.log('fetch complete');
+    //check validitiy
+    if (this.model.isValid()) {
+      const items = this.model.pick('name', 'symbol', 'change', 'perc', 'price', 'high', 'low', 'trend', 'range');
+      //add new stock item
+      this.collection.add(items);
+    }
+  }
   onChildviewAddStockItem(child) {
     const symbol = child.ui.symbol.val();
 
-    this.model.queryYahoo(symbol).done(() => {
-      //check validitiy
-      if (this.model.isValid()) {
-        const items = this.model.pick('name', 'symbol', 'change', 'perc', 'price', 'high', 'low', 'trend', 'range');
-        //add new stock item
-        this.collection.add(items);
-      }
-      //focus the input field again so we can easily add another stock
-      child.ui.symbol.focus()
-    });
+    this.model.queryYahoo(symbol);
+    //focus the input field again so we can easily add another stock
+    child.ui.symbol.focus()
   }
   itemAdded() {
     this.ui.none.hide();
