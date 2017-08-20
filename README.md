@@ -1,6 +1,7 @@
 # Install Directions...
 1. `cd` to the project folder and run bundle update to install gems.
-2.
+2. run `rails s` to start the Rails WEBrick server.
+3. navigate to `localhost:3000`
 # Thought Process...
 ### There are several ways that the API can be accessed:
 #### Way #1:
