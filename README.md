@@ -26,30 +26,31 @@ Turbolinks can sometimes interfere with other JavaScript libraries that were poo
 Although server side templating is convienent, sometimes we need to set the state using JavaScript the first time the view is displayed. In this case, the stock arrow on the right of every item block. Rendering the template and then applying state changes with JavaScript later can create a "jumping" effect where UI components assemble in steps and this appears un-professional. It may be better, then, to assemble the entire component and its state before first rendering it.
 
 #### Way #3
-1. Have the form do a GET request directly to the API using AJAX
-2. Process the returned data with JavaScript  
-    * We could process it manually with jQuery
-    * We could use React components
-    * We could use Backbone/Marionette View Models
-3. Add each item as we request it
+1. Have the form do a GET request directly to the API using AJAX.
+2. Process the returned data with JavaScript.
+    * We could process it manually with jQuery.
+    * We could use React components.
+    * We could use Backbone/Marionette Views and Models.
+3. Add each item as we request it.
 4. On page reload, the data is gone. We would need to request it again.
 ##### Advantages:
 Quick and easy, especially for the demo.
 Client-side templates are the most ideal for interactive web apps (but not for informational display pages that should be indexed by Google).
 ##### Disadvantages:
 We're not saving state. So if you reload the page, your stock items that you added will be gone.
-Also, if SEO is of a concern, we lose that here because client-side templates are difficult for search engines to crawl.
+Also, if SEO is of a concern, we lose that here because client-side templates can be difficult for search engines to crawl [(Although Google now says they can do it).](https://webmasters.googleblog.com/2015/10/deprecating-our-ajax-crawling-scheme.html)
 
 #### Way #4
 1. Have the form do a POST request to our server using AJAX
 2. Query the API.
 3. Persist the data in our own database.
-4. Process the returned data with JavaScript like in Way #3
+4. Process the returned data with JavaScript like in Way #3.
 ##### Advantages:
 We get the data persistence, plus client-side templating.
 ##### Disadvantages:
 The provided design docs don't have a delete button on each stock item block, so I'm assuming this method isn't what the test has in mind, and that for this small demo saving session state isn't important.
 
 #### Therefore, I'm going to choose Way #3.
-1. First step is to build the layout and CSS
-2. Next, I'll use Backbone and Marionette
+1. First step is to build the layout and CSS.
+2. Next, I'll use Backbone and Marionette.
+3. Refactor and improve.
