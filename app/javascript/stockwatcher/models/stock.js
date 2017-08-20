@@ -17,19 +17,16 @@ export default class StockModel extends Backbone.Model {
   }
   validate(attrs) {
     const errors = {};
-    let hasError = false;
-
     const testProps = ['name', 'symbol', 'change', 'perc', 'price', 'high', 'low', 'trend'];
 
     const allAttrsExist = testProps.forEach((value) => {
       if (!attrs[value]) {
         errors.text = `${value} must be set`;
-        hasError = true;
         return false;
       }
     });
 
-    if (hasError) {
+    if (errors.text) {
       console.error(errors);
       alert("Couldn't find stock. Please try another symbol.")
       return errors;
