@@ -20,7 +20,6 @@ export default class FormView extends Marionette.LayoutView {
   }
   ui() {
     return {
-      form: '.fu-stock-form',
       symbol: '.fu-stock-symbol-field'
     };
   }

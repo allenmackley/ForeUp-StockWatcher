@@ -54,14 +54,13 @@ export default class StockView extends Marionette.LayoutView {
       const items = this.model.pick('name', 'symbol', 'change', 'perc', 'price', 'high', 'low', 'trend', 'range');
       //add new stock item
       this.collection.add(items);
+      //focus the input field again so we can easily add another stock
+      this.getChildView('form').ui.symbol.focus();
     }
   }
   onChildviewAddStockItem(child) {
     const symbol = child.ui.symbol.val();
-
     this.model.queryYahoo(symbol);
-    //focus the input field again so we can easily add another stock
-    child.ui.symbol.focus()
   }
   itemAdded() {
     this.ui.none.hide();

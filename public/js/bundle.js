@@ -18132,14 +18132,13 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___defaul
       const items = this.model.pick('name', 'symbol', 'change', 'perc', 'price', 'high', 'low', 'trend', 'range');
       //add new stock item
       this.collection.add(items);
+      //focus the input field again so we can easily add another stock
+      this.getChildView('form').ui.symbol.focus();
     }
   }
   onChildviewAddStockItem(child) {
     const symbol = child.ui.symbol.val();
-
     this.model.queryYahoo(symbol);
-    //focus the input field again so we can easily add another stock
-    child.ui.symbol.focus()
   }
   itemAdded() {
     this.ui.none.hide();
@@ -18184,7 +18183,6 @@ class FormView extends __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default
   }
   ui() {
     return {
-      form: '.fu-stock-form',
       symbol: '.fu-stock-symbol-field'
     };
   }
