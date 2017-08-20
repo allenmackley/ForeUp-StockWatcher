@@ -1,4 +1,3 @@
-import $ from 'jquery'
 import Marionette from 'backbone.marionette';
 import FormView from './form';
 import ListView from './list';
@@ -35,36 +34,8 @@ export default class StockView extends Marionette.LayoutView {
   }
   onChildviewAddStockItem(child) {
     const symbol = child.ui.symbol.val();
-    const url = `https://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20yahoo.finance.quote%20WHERE%20symbol%20%3D%20'${symbol}'&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=`;
 
-    $.getJSON(url, (data) => {
-      let trend;
-      if (!data) {
-        alert("Could not retrieve stock data.")
-        return
-      } else if (!data.query.results) {
-        alert("Enter a four character stock symbol and try again.")
-        return
-      }
-      const
-        quote    = data.query.results.quote,
-        price    = parseFloat(quote.LastTradePriceOnly, 10),
-        change   = parseFloat(quote.Change, 10),
-        perc     = ((change / price) * 100).toFixed(2),
-        high     = parseFloat(quote.DaysHigh, 10),
-        low      = parseFloat(quote.DaysLow, 10),
-        dayDiff  = high - low,
-        curDiff  = high - price,
-        range    = (curDiff / dayDiff) * 100,
-        { symbol, Name: name } = quote;
-
-      if ( parseFloat(quote.Change) > 0 ) {
-        trend = 'fu-stock-up';
-      } else {
-        trend = 'fu-stock-down';
-      }
-      //set the model so that we can verify the data on it.
-      this.model.set({name, symbol, change, price, high, low, perc, trend, range});
+    this.model.queryYahoo(symbol).done(() => {
       //check validitiy
       if (this.model.isValid()) {
         const items = this.model.pick('name', 'symbol', 'change', 'perc', 'price', 'high', 'low', 'trend', 'range');
@@ -73,20 +44,13 @@ export default class StockView extends Marionette.LayoutView {
       }
       //focus it again so we can easily add another stock
       child.ui.symbol.focus()
-    })
+    });
   }
   itemAdded() {
     this.ui.none.hide();
+    //will clear the form field and call render on the model
     this.model.set({
-      name: '',
-      symbol: '',
-      change: '',
-      perc: '',
-      price: '',
-      high: '',
-      low: '',
-      trend: '',
-      range: ''
+      symbol: ''
     });
   }
 }

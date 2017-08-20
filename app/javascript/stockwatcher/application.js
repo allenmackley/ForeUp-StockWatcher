@@ -30,3 +30,4 @@ export class StockApp extends Marionette.Application {
 
 window.app = new StockApp
 window.app.start({initialData: initialData});
+// Backbone.history.start();

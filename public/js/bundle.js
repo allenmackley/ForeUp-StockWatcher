@@ -17396,6 +17396,7 @@ class StockApp extends __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___default
 
 window.app = new StockApp
 window.app.start({initialData: initialData});
+// Backbone.history.start();
 
 
 /***/ }),
@@ -18069,23 +18070,20 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;// Backbone.Baby
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_backbone_marionette__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_backbone_marionette__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__form__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__list__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__templates_layout_html__ = __webpack_require__(15);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__templates_layout_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__templates_layout_html__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_backbone_marionette__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_backbone_marionette__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__form__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__list__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__templates_layout_html__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__templates_layout_html___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__templates_layout_html__);
 
 
 
 
 
-
-class StockView extends __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___default.a.LayoutView {
+class StockView extends __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default.a.LayoutView {
   constructor(options) {
-    options.template = __WEBPACK_IMPORTED_MODULE_4__templates_layout_html___default.a;
+    options.template = __WEBPACK_IMPORTED_MODULE_3__templates_layout_html___default.a;
     options.el = 'body';
     options.regions = {
       form: '.fu-stock-form-cont',
@@ -18104,8 +18102,8 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___defaul
     if (this.collection.length) {
       this.ui.none.hide();
     }
-    const formView = new __WEBPACK_IMPORTED_MODULE_2__form__["a" /* default */]({model: this.model});
-    const listView = new __WEBPACK_IMPORTED_MODULE_3__list__["a" /* default */]({collection: this.collection});
+    const formView = new __WEBPACK_IMPORTED_MODULE_1__form__["a" /* default */]({model: this.model});
+    const listView = new __WEBPACK_IMPORTED_MODULE_2__list__["a" /* default */]({collection: this.collection});
     this.showChildView('form', formView);
     this.showChildView('list', listView);
   }
@@ -18114,36 +18112,8 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___defaul
   }
   onChildviewAddStockItem(child) {
     const symbol = child.ui.symbol.val();
-    const url = `https://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20yahoo.finance.quote%20WHERE%20symbol%20%3D%20'${symbol}'&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=`;
 
-    __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.getJSON(url, (data) => {
-      let trend;
-      if (!data) {
-        alert("Could not retrieve stock data.")
-        return
-      } else if (!data.query.results) {
-        alert("Enter a four character stock symbol and try again.")
-        return
-      }
-      const
-        quote    = data.query.results.quote,
-        price    = parseFloat(quote.LastTradePriceOnly, 10),
-        change   = parseFloat(quote.Change, 10),
-        perc     = ((change / price) * 100).toFixed(2),
-        high     = parseFloat(quote.DaysHigh, 10),
-        low      = parseFloat(quote.DaysLow, 10),
-        dayDiff  = high - low,
-        curDiff  = high - price,
-        range    = (curDiff / dayDiff) * 100,
-        { symbol, Name: name } = quote;
-
-      if ( parseFloat(quote.Change) > 0 ) {
-        trend = 'fu-stock-up';
-      } else {
-        trend = 'fu-stock-down';
-      }
-      //set the model so that we can verify the data on it.
-      this.model.set({name, symbol, change, price, high, low, perc, trend, range});
+    this.model.queryYahoo(symbol).done(() => {
       //check validitiy
       if (this.model.isValid()) {
         const items = this.model.pick('name', 'symbol', 'change', 'perc', 'price', 'high', 'low', 'trend', 'range');
@@ -18153,19 +18123,13 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___defaul
       //focus it again so we can easily add another stock
       child.ui.symbol.focus()
     })
+
   }
   itemAdded() {
     this.ui.none.hide();
+    //will clear the form field and call render on the model
     this.model.set({
-      name: '',
-      symbol: '',
-      change: '',
-      perc: '',
-      price: '',
-      high: '',
-      low: '',
-      trend: '',
-      range: ''
+      symbol: ''
     });
   }
 }
@@ -18314,11 +18278,14 @@ return __p;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_backbone__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_backbone___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_backbone__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_backbone__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_backbone___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_backbone__);
 
 
-class StockModel extends __WEBPACK_IMPORTED_MODULE_0_backbone___default.a.Model {
+
+class StockModel extends __WEBPACK_IMPORTED_MODULE_1_backbone___default.a.Model {
   defaults() {
     return {
       name: '',
@@ -18373,6 +18340,41 @@ class StockModel extends __WEBPACK_IMPORTED_MODULE_0_backbone___default.a.Model 
       alert("Couldn't find stock. Please try another symbol.")
       return errors;
     }
+  }
+  queryYahoo(symbol) {
+    const url = `https://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20yahoo.finance.quote%20WHERE%20symbol%20%3D%20'${symbol}'&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=`;
+
+    return __WEBPACK_IMPORTED_MODULE_0_jquery___default.a.getJSON(url, (data) => {
+      let trend;
+      if (!data) {
+        alert("Could not retrieve stock data.")
+        return
+      } else if (!data.query.results) {
+        alert("Enter a four character stock symbol and try again.")
+        return
+      }
+      const
+        quote    = data.query.results.quote,
+        price    = parseFloat(quote.LastTradePriceOnly, 10),
+        change   = parseFloat(quote.Change, 10),
+        perc     = ((change / price) * 100).toFixed(2),
+        high     = parseFloat(quote.DaysHigh, 10),
+        low      = parseFloat(quote.DaysLow, 10),
+        dayDiff  = high - low,
+        curDiff  = high - price,
+        range    = (curDiff / dayDiff) * 100,
+        { symbol, Name: name } = quote;
+
+      if ( parseFloat(quote.Change) > 0 ) {
+        trend = 'fu-stock-up';
+      } else {
+        trend = 'fu-stock-down';
+      }
+      //set the model so that we can verify the data on it.
+      this.set({name, symbol, change, price, high, low, perc, trend, range});
+
+      console.log('this', this)
+    });
   }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = StockModel;

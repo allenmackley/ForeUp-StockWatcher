@@ -1,3 +1,4 @@
+import $ from 'jquery'
 import Backbone from 'backbone';
 
 export default class StockModel extends Backbone.Model {
@@ -55,5 +56,40 @@ export default class StockModel extends Backbone.Model {
       alert("Couldn't find stock. Please try another symbol.")
       return errors;
     }
+  }
+  queryYahoo(symbol) {
+    const url = `https://query.yahooapis.com/v1/public/yql?q=SELECT%20*%20FROM%20yahoo.finance.quote%20WHERE%20symbol%20%3D%20'${symbol}'&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=`;
+
+    return $.getJSON(url, (data) => {
+      let trend;
+      if (!data) {
+        alert("Could not retrieve stock data.")
+        return
+      } else if (!data.query.results) {
+        alert("Enter a four character stock symbol and try again.")
+        return
+      }
+      const
+        quote    = data.query.results.quote,
+        price    = parseFloat(quote.LastTradePriceOnly, 10),
+        change   = parseFloat(quote.Change, 10),
+        perc     = ((change / price) * 100).toFixed(2),
+        high     = parseFloat(quote.DaysHigh, 10),
+        low      = parseFloat(quote.DaysLow, 10),
+        dayDiff  = high - low,
+        curDiff  = high - price,
+        range    = (curDiff / dayDiff) * 100,
+        { symbol, Name: name } = quote;
+
+      if ( parseFloat(quote.Change) > 0 ) {
+        trend = 'fu-stock-up';
+      } else {
+        trend = 'fu-stock-down';
+      }
+      //set the model so that we can verify the data on it.
+      this.set({name, symbol, change, price, high, low, perc, trend, range});
+
+      console.log('this', this)
+    });
   }
 }
