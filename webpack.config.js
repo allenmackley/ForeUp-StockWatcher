@@ -1,8 +1,12 @@
 var webpack = require('webpack');
 var path = require("path");
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  entry: './app/javascript/packs/driver.js',
+  entry: [
+    './app/javascript/packs/driver.js',
+    './app/javascript/stockwatcher/styles/stocks.scss'
+  ],
   module: {
     loaders: [
       {
@@ -11,17 +15,24 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader']
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'sass-loader']
+        })
       }
     ]
   },
   output: {
-    path: __dirname + '/public/js',
-    filename: 'bundle.js'
+    path: __dirname + '/public',
+    filename: 'js/bundle.js'
   },
   plugins: [
     new webpack.ProvidePlugin({
       _: 'underscore'
+    }),
+    new ExtractTextPlugin({
+      filename: 'css/style.css',
+      allChunks: true
     })
   ],
   resolve: {

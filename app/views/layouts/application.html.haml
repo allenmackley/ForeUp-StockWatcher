@@ -6,6 +6,7 @@
     %meta{:name => "viewport", :content => "width=device-width"}
     %meta{:name => "description", :content => "Simple stock watcher app. Add a stock by entering a four character stock symbol."}
     = csrf_meta_tags
+    %link{rel: 'stylesheet', type: 'text/css', href: '/css/style.css'}
   %body
     = yield
     %script{:type => "text/javascript", :src  => "js/bundle.js"}
