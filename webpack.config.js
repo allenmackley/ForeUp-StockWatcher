@@ -2,12 +2,16 @@ var webpack = require('webpack');
 var path = require("path");
 
 module.exports = {
-  entry: './app/javascript/application.js',
+  entry: './app/javascript/packs/driver.js',
   module: {
     loaders: [
       {
         test: /\.html$/,
         loader: 'underscore-template-loader'
+      },
+      {
+        test: /\.scss$/,
+        loaders: ['style-loader', 'css-loader', 'sass-loader']
       }
     ]
   },

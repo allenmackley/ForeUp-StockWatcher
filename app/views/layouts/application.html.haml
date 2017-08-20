@@ -6,9 +6,6 @@
     %meta{:name => "viewport", :content => "width=device-width"}
     %meta{:name => "description", :content => "Simple stock watcher app. Add a stock by entering a four character stock symbol."}
     = csrf_meta_tags
-    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
-    //This is for Sprockets, which I've disabled. Note that Webpack includes public/js/bundle.js at the end of the <body> tag in application.html.haml
-    -# = javascript_include_tag 'application'
   %body
     = yield
     %script{:type => "text/javascript", :src  => "js/bundle.js"}

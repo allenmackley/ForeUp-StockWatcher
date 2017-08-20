@@ -1,0 +1,253 @@
+/*
+** Every class is namespaced with 'fu' (for 'ForeUp').
+** Browsers can lookup classes faster than tagnames.
+** Although ids are even faster than classes, they should only be used on one element per id, so we avoid using them for sytling whenever we think that what we're building could become modular or re-used in another area later, which most app components are.
+** Creating a class selector for each element, vs nested tagname selectors, prevents future errors, both in CSS and JavaScript.
+** It's a good practice to define multiple classes for separate design elements in our layout, but without getting carried away. I like to add fewer classed on the DOM, and instead use mixins and extensions with SASS.
+*/
+@import url('https://fonts.googleapis.com/css?family=Droid+Serif:400,700');
+$gray-verylight: #D0D0D0;
+$gray-light: #A9ABAB;
+$gray-dark: #808080;
+$green-light: #73AD21;
+$green-dark: #008000;
+$break-1: 690px;
+@mixin text-ellipsis($state: 'on') {
+  @if $state == 'on' {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  } @else {
+    white-space: normal;
+  }
+}
+@mixin arrow($length: '10px', $girth: '6px', $pointing: 'down', $color: green) {
+  width: 0;
+  height: 0;
+  @if $pointing == 'left' {
+    border-top: $girth solid transparent;
+    border-bottom: $girth solid transparent;
+    border-right: $length solid $color;
+  }
+  @if $pointing == 'right' {
+    border-top: $girth solid transparent;
+    border-bottom: $girth solid transparent;
+    border-left: $length solid $color;
+  }
+  @if $pointing == 'up' {
+    border-left: $girth solid transparent;
+    border-right: $girth solid transparent;
+    border-bottom: $length solid $color;
+  }
+  @if $pointing == 'down' {
+    border-left: $girth solid transparent;
+    border-right: $girth solid transparent;
+    border-top: $length solid $color;
+  }
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.font-default {
+  font-family: 'Droid Serif', serif;
+}
+body {
+  @extend .flex-col;
+  @extend .font-default;
+  max-width: $break-1;
+  min-width: 320px;
+  margin: 30px auto 0 auto;
+  background: #F0F0F0;
+  color: #444444;
+}
+h1 {
+  margin: 10px 0;
+  font-size: 35px;
+}
+::placeholder {
+  color: $gray-light;
+}
+.fu-stock-header {
+  @extend .flex-col;
+  justify-content: center;
+  text-align: center;
+  .fu-stock-form {
+    display: flex;
+    justify-content: center;
+    margin: 18px;
+    .fu-stock-symbol-field {
+      border: 1px solid $gray-verylight;
+      width: 220px;
+      padding: 0 25px;
+      height: 48px;
+      border-radius: 3px;
+      font-size: 13px;
+      @media screen and (max-width: $break-1) {
+        width: 151px;
+      }
+    }
+    .fu-stock-submit {
+      width: 108px;
+      height: 48px;
+      border: none;
+      border-radius: 3px;
+      align-self: center;
+      margin-left: 10px;
+      background: $green-light;
+      color: white;
+      padding-top: 2px;
+      box-shadow: 0px -1px 0px #6d6d6d inset;
+      font-size: 12px;
+      font-weight: bold;
+      @extend .font-default;
+      @media screen and (max-width: $break-1) {
+        width: 77px;
+      }
+    }
+  }
+}
+.fu-stock-display {
+  @media screen and (max-width: $break-1) {
+    flex-direction: column;
+    align-items: center;
+    margin: 12px 0 0 0;
+  }
+  .fu-stock-none {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 300px;
+    font-size: 24px;
+    font-weight: bold;
+    color: $gray-light;
+  }
+  .fu-stocks {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    @media screen and (max-width: $break-1) {
+      flex-direction: column;
+      align-items: center;
+    }
+    .fu-stock-item {
+      display: flex;
+      justify-content: space-between;
+      box-sizing: border-box;
+      min-width: 320px;
+      width: 320px;
+      height: 135px;
+      max-width: 130px;
+      overflow: hidden;
+      background: white;
+      border: 1px solid #E0E0E0;
+      border-radius: 3px;
+      margin: 10px;
+      padding: 10px;
+      @media screen and (max-width: $break-1) {
+        height: 60px;
+        margin: 5px;
+        min-width: 290px;
+        width: 290px;
+      }
+      .fu-stock-left {
+        @extend .flex-col;
+        width: 50%;
+        justify-content: space-between;
+        @media screen and (max-width: $break-1) {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+        }
+        .fu-stock-sig {
+          width: 100%;
+          @media screen and (max-width: $break-1) {
+            width: 50%;
+          }
+          .fu-stock-title {
+            margin: 0;
+            font-size: 18px;
+            @include text-ellipsis();
+            @media screen and (max-width: $break-1) {
+              font-size: 14px;
+            }
+          }
+          .fu-stock-symbol {
+            color: $gray-light;
+            font-size: 14px;
+            margin: 0;
+            font-weight: normal;
+          }
+        }
+        .fu-stock-nums {
+          padding-bottom: 5px;
+          @media screen and (max-width: $break-1) {
+            text-align: right;
+          }
+          .fu-stock-trend {
+            display: flex;
+            padding-left: 2px;
+            .fu-stock-trend-arrow {
+              float: left;
+              align-self: center;
+              &.fu-stock-up {
+                @include arrow(10px, 5px, 'up', $green-dark);
+              }
+              &.fu-stock-down {
+                @include arrow(10px, 5px, 'down', red);
+              }
+            }
+            .fu-stock-trend-perc {
+              padding: 0 0 0 5px;;
+              font-size: 14px;
+              &.fu-stock-up {
+                color: $green-dark;
+              }
+              &.fu-stock-down {
+                color: red;
+              }
+            }
+          }
+          .fu-stock-price {
+            font-size: 26px;
+            @media screen and (max-width: $break-1) {
+              font-size: 18px;
+            }
+          }
+        }
+      }
+      .fu-stock-right {
+        display: flex;
+        padding: 7px 0;
+        @media screen and (max-width: $break-1) {
+          display: none;
+        }
+        .fu-stock-vert {
+          border-right: 1.5px solid $gray-verylight;
+          margin: 5px 8px;
+          .fu-stock-vert-arrow {
+            position: relative;
+            margin-top: -6px;
+            @include arrow(12px, 6px, 'right', $gray-verylight)
+          }
+        }
+        .fu-stock-vert-prices {
+          color: $gray-dark;
+          font-size: 14px;
+          @extend .flex-col;
+          justify-content: space-between;
+          height: 100%;
+          .fu-stock-vert-high {
+
+          }
+          .fu-stock-vert-low {
+
+          }
+        }
+      }
+    }
+  }
+}
