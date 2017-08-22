@@ -49,13 +49,14 @@ export default class StockModel extends Backbone.Model {
       price    = parseFloat(quote.LastTradePriceOnly, 10),
       change   = parseFloat(quote.Change, 10),
       perc     = ((change / price) * 100).toFixed(2),
-      high     = parseFloat(quote.DaysHigh, 10),
-      low      = parseFloat(quote.DaysLow, 10),
+      high     = parseFloat(quote.DaysHigh, 10).toFixed(2),
+      low      = parseFloat(quote.DaysLow, 10).toFixed(2),
       dayDiff  = high - low,
       curDiff  = high - price,
       range    = (curDiff / dayDiff) * 100,
       { symbol, Name: name } = quote;
 
+    console.log('low', low, 'high', high);
     if ( parseFloat(quote.Change) > 0 ) {
       trend = 'fu-stock-up';
     } else {
