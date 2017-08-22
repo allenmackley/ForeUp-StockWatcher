@@ -15,7 +15,7 @@ export default class StockView extends Marionette.LayoutView {
   }
   ui() {
     return {
-      none: '.fu-stock-none'
+      none: '.fu-stock-none',
     }
   }
   onRender() {
@@ -23,6 +23,7 @@ export default class StockView extends Marionette.LayoutView {
     if (this.collection.length) {
       this.ui.none.hide();
     }
+    console.log(this);
     const formView = new FormView({model: this.model});
     const listView = new ListView({collection: this.collection});
     this.showChildView('form', formView);
@@ -35,7 +36,6 @@ export default class StockView extends Marionette.LayoutView {
     return { fetched: 'fetchComplete' };
   }
   fetchComplete() {
-    console.log('fetch complete');
     //check validitiy
     if (this.model.isValid()) {
       const items = this.model.pick('name', 'symbol', 'change', 'perc', 'price', 'high', 'low', 'trend', 'range');

@@ -17396,7 +17396,6 @@ class StockApp extends __WEBPACK_IMPORTED_MODULE_1_backbone_marionette___default
 
 window.app = new StockApp
 window.app.start({initialData: initialData});
-// Backbone.history.start();
 
 
 /***/ }),
@@ -18093,7 +18092,7 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___defaul
   }
   ui() {
     return {
-      none: '.fu-stock-none'
+      none: '.fu-stock-none',
     }
   }
   onRender() {
@@ -18101,6 +18100,7 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___defaul
     if (this.collection.length) {
       this.ui.none.hide();
     }
+    console.log(this);
     const formView = new __WEBPACK_IMPORTED_MODULE_1__form__["a" /* default */]({model: this.model});
     const listView = new __WEBPACK_IMPORTED_MODULE_2__list__["a" /* default */]({collection: this.collection});
     this.showChildView('form', formView);
@@ -18113,7 +18113,6 @@ class StockView extends __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___defaul
     return { fetched: 'fetchComplete' };
   }
   fetchComplete() {
-    console.log('fetch complete');
     //check validitiy
     if (this.model.isValid()) {
       const items = this.model.pick('name', 'symbol', 'change', 'perc', 'price', 'high', 'low', 'trend', 'range');
@@ -18217,7 +18216,6 @@ class Stock extends __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default.a.
 }
 class ListView extends __WEBPACK_IMPORTED_MODULE_0_backbone_marionette___default.a.CollectionView {
   constructor(options) {
-    options.tagName = 'div';
     options.className = 'fu-stocks';
     options.childView = Stock
     super(options);

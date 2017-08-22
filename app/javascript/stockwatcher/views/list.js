@@ -12,7 +12,6 @@ class Stock extends Marionette.LayoutView {
 }
 export default class ListView extends Marionette.CollectionView {
   constructor(options) {
-    options.tagName = 'div';
     options.className = 'fu-stocks';
     options.childView = Stock
     super(options);
