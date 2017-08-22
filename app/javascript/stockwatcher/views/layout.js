@@ -23,7 +23,6 @@ export default class StockView extends Marionette.LayoutView {
     if (this.collection.length) {
       this.ui.none.hide();
     }
-    console.log(this);
     const formView = new FormView({model: this.model});
     const listView = new ListView({collection: this.collection});
     this.showChildView('form', formView);

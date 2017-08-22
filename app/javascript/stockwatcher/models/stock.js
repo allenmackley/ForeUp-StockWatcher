@@ -56,7 +56,6 @@ export default class StockModel extends Backbone.Model {
       range    = (curDiff / dayDiff) * 100,
       { symbol, Name: name } = quote;
 
-    console.log('low', low, 'high', high);
     if ( parseFloat(quote.Change) > 0 ) {
       trend = 'fu-stock-up';
     } else {
