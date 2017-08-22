@@ -46,7 +46,7 @@ export default class StockModel extends Backbone.Model {
     let trend;
     const
       quote    = data.query.results.quote,
-      price    = parseFloat(quote.LastTradePriceOnly, 10),
+      price    = parseFloat(quote.LastTradePriceOnly, 10).toFixed(2),
       change   = parseFloat(quote.Change, 10),
       perc     = ((change / price) * 100).toFixed(2),
       high     = parseFloat(quote.DaysHigh, 10).toFixed(2),
